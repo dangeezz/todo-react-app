@@ -5,7 +5,11 @@ import TodoItem from "./TodoItem";
 const EditableTodoItem = props => {
   const { task, edit } = props;
 
-  const renderFormOrItem = (edit) ? <TodoForm /> : <TodoItem task={task} />;
+  const renderFormOrItem = edit ? (
+    <TodoForm />
+  ) : (
+    <TodoItem task={task} onCompleteTask={props.onCompleteTask} />
+  );
 
   return <li>{renderFormOrItem}</li>;
 };

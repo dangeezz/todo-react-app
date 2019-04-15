@@ -7,7 +7,12 @@ const EditableTodoList = props => {
   return (
     <ul>
       {tasks.map(task => (
-        <EditableTodoItem key={task.id} edit={task.id === editId} task={task} />
+        <EditableTodoItem
+          key={task.id}
+          edit={task.id === editId}
+          task={task}
+          onCompleteTask={props.onCompleteTask}
+        />
       ))}
     </ul>
   );

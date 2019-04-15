@@ -3,10 +3,12 @@ import Todo from "./Todo";
 import TodoForm from "./TodoForm";
 import EditableTodoList from "./EditableTodoList";
 import TodoStatus from "./TodoStatus";
-
-const todo = new Todo();
-
 class TodoApp extends Component {
+  constructor() {
+    super();
+    this.todo = new Todo();
+  }
+
   state = {
     tasks: [],
     task: "",
@@ -15,12 +17,16 @@ class TodoApp extends Component {
   };
 
   componentDidMount() {
-    this.setState({ tasks: todo.fetch() });
+    this.setState({ tasks: this.todo.fetch() });
   }
 
   componentDidUpdate() {
-    todo.save(this.state.tasks);
+    this.todo.save(this.state.tasks);
   }
+
+  handleCompleteTask = id => {
+    this.completeTask(id);
+  };
 
   handleFilterSelect = filter => this.setState({ filter });
 
@@ -135,6 +141,7 @@ class TodoApp extends Component {
         <TodoForm />
 
         <EditableTodoList
+          onCompleteTask={this.handleCompleteTask}
           tasks={this.filteredTasks()}
           editId={this.state.editId}
         />
