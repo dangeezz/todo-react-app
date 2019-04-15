@@ -2,6 +2,14 @@ export default class Todo {
   static app_id = "todo_app_id";
   static uid = 0;
 
+  static create(name) {
+    return {
+      completed: false,
+      id: Todo.uid++,
+      name
+    };
+  }
+
   fetch() {
     const store = localStorage.getItem(Todo.app_id) || "[]";
     const tasks = JSON.parse(store);

@@ -2,11 +2,10 @@ import React from "react";
 
 const pluralize = n => (n > 1 ? "tasks" : "task");
 
-const TodoStatus = ({ numOfActiveTask }) => {
+const TodoStatus = ({ remaining }) => {
   return (
     <p>
-      {numOfActiveTask} {pluralize(numOfActiveTask)} left to be
-      completed.
+      {remaining} {pluralize(remaining)} left to be completed.
     </p>
   );
 };

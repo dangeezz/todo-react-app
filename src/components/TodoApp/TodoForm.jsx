@@ -1,14 +1,9 @@
 import React from "react";
 
-const TodoForm = ({ value, onFormSubmit, onFormChange }) => {
+const TodoForm = props => {
   return (
-    <form onSubmit={onFormSubmit}>
-      <input
-        className="input"
-        type="text"
-        value={value}
-        onChange={onFormChange}
-      />
+    <form>
+      <input className="input" type="text" />
     </form>
   );
 };
