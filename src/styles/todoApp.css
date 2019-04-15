@@ -1,0 +1,49 @@
+h1 {
+  margin-bottom: 1.5rem;
+  color: rgb(218, 154, 154);
+  text-align: center;
+  text-transform: uppercase;
+}
+
+
+form,
+ul,
+p {
+  margin-bottom: 1rem;
+}
+
+input {
+  box-shadow: none;
+}
+
+li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  padding: 1rem;
+  border-radius: 0.2rem;
+  box-shadow: 0 0 3px rgba(81, 78, 78, 0.3);
+  font-size: 1.125rem;
+}
+
+li span {
+  margin-left: 1rem;
+}
+
+li input:checked + span {
+  color: #838383;
+  text-decoration: line-through;
+}
+
+li > :last-child {
+  margin-left: auto;
+}
+
+li > form:last-child {
+  flex: 1;
+  margin: 0;
+}
+
+.control:nth-child(4) {
+  margin-left: auto;
+}
