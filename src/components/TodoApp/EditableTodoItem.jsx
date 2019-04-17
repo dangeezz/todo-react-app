@@ -14,6 +14,12 @@ class EditableTodoItem extends Component {
     this.props.onTaskEdit(this.props.task, this.state.edit);
   }
 
+  handleKeyDown = evt => {
+    if (evt.keyCode === 27) {
+      this.props.onCloseEdit();
+    }
+  }
+
   renderFormOrItem() {
     const { task, edit, onTaskComplete, onTaskDelete, onOpenEdit } = this.props;
     if (edit) {
@@ -24,6 +30,7 @@ class EditableTodoItem extends Component {
           onChange={this.handleChange}
           onSubmit={this.handleSubmit}
           onBlur={this.props.onCloseEdit}
+          onKeyDown={this.handleKeyDown}
         />
       );
     }
