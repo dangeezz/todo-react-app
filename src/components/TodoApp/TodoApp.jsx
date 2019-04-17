@@ -11,8 +11,8 @@ class TodoApp extends Component {
 
   state = {
     tasks: [],
-    task: "",
-    editId: null,
+    newTask: "",
+    editedTask: null,
     filter: "all"
   };
 
@@ -24,41 +24,63 @@ class TodoApp extends Component {
     this.todo.save(this.state.tasks);
   }
 
-  handleCompleteTask = id => {
+  handleChange = evt => this.setState({ newTask: evt.target.value });
+
+  handleSubmit = evt => {
+    evt.preventDefault();
+    const { tasks, newTask } = this.state;
+    if (newTask.trim()) {
+      this.setState({
+        tasks: [Todo.create(newTask), ...tasks],
+        newTask: ""
+      });
+    }
+  };
+
+  handleTaskComplete = id => {
     this.completeTask(id);
   };
 
-  handleFilterSelect = filter => this.setState({ filter });
+  handleDeleteTask = taskToDelete => {
+    const deleteTask = task => task.id !== taskToDelete.id;
+    const tasks = this.state.tasks.filter(deleteTask);
+    this.setState({ tasks });
+  };
 
-  addTask() {
-    const { tasks, task } = this.state;
-    this.setState({
-      tasks: [Todo.create(task), ...tasks],
-      task: ""
-    });
-  }
+  handleOpenEdit = task => {
+    const { tasks } = this.state;
+    const editedTask = tasks.find(t => t.id === task.id);
+    if (!editedTask.completed) {
+      const id = editedTask.id;
+      this.setState({ editedTask: id });
+    }
+  };
 
-  editTask(id, name) {
-    let tasks = [...this.state.tasks];
+  handleCloseEdit = () => {
+    this.setState({ editedTask: null });
+  };
+
+  handleTaskEdit = (taskToEdit, name) => {
+    let { tasks } = this.state;
     tasks = tasks.map(task => {
-      if (task.id === id) {
+      if (task.id === taskToEdit.id) {
         task = { ...task, name };
       }
       return task;
     });
-    this.setState({ tasks, editId: null, editTask: "" });
-  }
+    this.setState({ tasks, editedTask: null });
+  };
 
-  deleteTask(id) {
-    const tasks = this.state.tasks.filter(task => task.id !== id);
-    this.setState({ tasks });
-  }
+  handleFilterSelect = filter => this.setState({ filter });
 
   completeTask(id) {
     const tasks = [...this.state.tasks].map(task => {
-      task.id === id && (task.completed = !task.completed);
+      if (task.id === id) {
+        task = { ...task, completed: !task.completed };
+      }
       return task;
     });
+
     this.setState({ tasks });
   }
 
@@ -78,10 +100,12 @@ class TodoApp extends Component {
 
   computeNumOfActiveTask() {
     const { tasks } = this.state;
-    return tasks.reduce((sum, task) => {
-      !task.completed && sum++;
+    const totalActiveTask = (sum, task) => {
+      if (!task.completed) sum += 1;
       return sum;
-    }, 0);
+    };
+
+    return tasks.reduce(totalActiveTask, 0);
   }
 
   renderTasksControl() {
@@ -138,12 +162,20 @@ class TodoApp extends Component {
   render() {
     return (
       <div className="todo-app">
-        <TodoForm />
+        <TodoForm
+          value={this.state.newTask}
+          onChange={this.handleChange}
+          onSubmit={this.handleSubmit}
+        />
 
         <EditableTodoList
-          onCompleteTask={this.handleCompleteTask}
           tasks={this.filteredTasks()}
-          editId={this.state.editId}
+          editing={this.state.editedTask}
+          onOpenEdit={this.handleOpenEdit}
+          onCloseEdit={this.handleCloseEdit}
+          onTaskEdit={this.handleTaskEdit}
+          onTaskDelete={this.handleDeleteTask}
+          onTaskComplete={this.handleTaskComplete}
         />
 
         <TodoStatus remaining={this.computeNumOfActiveTask()} />
