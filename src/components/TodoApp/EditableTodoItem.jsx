@@ -29,7 +29,7 @@ class EditableTodoItem extends Component {
           value={this.state.edit}
           onChange={this.handleChange}
           onSubmit={this.handleSubmit}
-          onBlur={this.props.onCloseEdit}
+          onBlur={this.handleSubmit}
           onKeyDown={this.handleKeyDown}
         />
       );
