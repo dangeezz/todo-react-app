@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
-import TodoApp from './components/TodoApp';
+import React, { Component } from "react";
+import TodoApp from "./components/TodoApp";
+import "./styles/index.scss";
 
 class App extends Component {
   render() {

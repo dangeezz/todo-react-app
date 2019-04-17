@@ -12,13 +12,13 @@ class EditableTodoItem extends Component {
   handleSubmit = evt => {
     evt.preventDefault();
     this.props.onTaskEdit(this.props.task, this.state.edit);
-  }
+  };
 
   handleKeyDown = evt => {
     if (evt.keyCode === 27) {
       this.props.onCloseEdit();
     }
-  }
+  };
 
   renderFormOrItem() {
     const { task, edit, onTaskComplete, onTaskDelete, onOpenEdit } = this.props;
