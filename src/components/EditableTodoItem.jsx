@@ -1,52 +1,46 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import TodoItem from "./TodoItem";
 import TodoForm from "./TodoForm";
 
-class EditableTodoItem extends Component {
-  state = {
-    edit: this.props.task.name
-  };
+const EditableTodoItem = props => {
+  const { task, edit } = props;
+  const [name, setName] = useState(task.name);
+  let TodoFormOrItem;
 
-  handleChange = evt => this.setState({ edit: evt.target.value });
+  const handleChange = evt => setName(evt.target.value);
 
-  handleSubmit = evt => {
+  const handleSubmit = evt => {
     evt.preventDefault();
-    this.props.onTaskEdit(this.props.task, this.state.edit);
+    props.onTaskEdit(task, name);
   };
 
-  handleKeyDown = evt => {
-    if (evt.keyCode === 27) {
-      this.props.onCloseEdit();
-    }
+  const handleKeyDown = evt => {
+    if (evt.keyCode === 27) props.onCloseEdit();
   };
 
-  renderFormOrItem() {
-    const { task, edit, onTaskComplete, onTaskDelete, onOpenEdit } = this.props;
-    if (edit) {
-      return (
-        <TodoForm
-          autoFocus={true}
-          value={this.state.edit}
-          onChange={this.handleChange}
-          onSubmit={this.handleSubmit}
-          onBlur={this.handleSubmit}
-          onKeyDown={this.handleKeyDown}
-        />
-      );
-    }
-    return (
+  if (edit) {
+    TodoFormOrItem = (
+      <TodoForm
+        autoFocus={true}
+        value={name}
+        onChange={handleChange}
+        onSubmit={handleSubmit}
+        onBlur={handleSubmit}
+        onKeyDown={handleKeyDown}
+      />
+    );
+  } else {
+    TodoFormOrItem = (
       <TodoItem
         task={task}
-        onOpenEdit={onOpenEdit}
-        onTaskDelete={onTaskDelete}
-        onTaskComplete={onTaskComplete}
+        onOpenEdit={props.onOpenEdit}
+        onTaskDelete={props.onTaskDelete}
+        onTaskComplete={props.onTaskComplete}
       />
     );
   }
 
-  render() {
-    return <li>{this.renderFormOrItem()}</li>;
-  }
-}
+  return <li>{TodoFormOrItem}</li>;
+};
 
 export default EditableTodoItem;
